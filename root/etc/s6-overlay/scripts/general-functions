@@ -25,7 +25,11 @@ setup_nameservers () {
         fi
         nameservers+=( "${nameserver}" )
     done
-    cp "${APP_DIR}/unbound.conf" "/dev/shm/unbound.conf"
+    if [[ -f "${CONFIG_DIR}/unbound.conf" ]]; then
+        cp "${CONFIG_DIR}/unbound.conf" "/dev/shm/unbound.conf"
+    else
+        cp "${APP_DIR}/unbound.conf" "/dev/shm/unbound.conf"
+    fi
     if [[ ${#nameservers_dot[@]} -gt 0 ]] || [[ ${#nameservers[@]} -gt 0 ]]; then
         echo '    forward-zone:' >> "/dev/shm/unbound.conf"
         echo '        name: "."' >> "/dev/shm/unbound.conf"
