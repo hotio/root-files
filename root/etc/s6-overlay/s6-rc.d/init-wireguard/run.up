@@ -312,7 +312,7 @@ if [[ ${VPN_ENABLED} == "true" ]]; then
     ping4=$(ping -c 5 1.1.1.1 2> /dev/null | tail -1 | awk -F ' = ' '{print $2}')
     if [[ -z ${ping4} ]]; then
         echo "[ERR] [$(date '+%Y-%m-%d %H:%M:%S')] [VPN] [IPV4] Ping test failed!"
-        [[ ${VPN_BRING_DOWN_ON_TEST_FAILURE} == true ]] && exit 1
+        [[ ${VPN_HEALTHCHECK_ENABLED} == true ]] && exit 1
     else
         echo "[INF] [$(date '+%Y-%m-%d %H:%M:%S')] [VPN] [IPV4] [PING: ${ping4}]"
     fi
@@ -320,7 +320,7 @@ if [[ ${VPN_ENABLED} == "true" ]]; then
     ip4=$(curl -fsL -4 --retry 5 --retry-max-time 60 --max-time 10 wtfismyip.com/json | jq -re '"[\(.YourFuckingLocation)] [\(.YourFuckingISP)] [\(.YourFuckingIPAddress)]"')
     if [[ -z ${ip4} ]]; then
         echo "[ERR] [$(date '+%Y-%m-%d %H:%M:%S')] [VPN] [IPV4] IP lookup failed!"
-        [[ ${VPN_BRING_DOWN_ON_TEST_FAILURE} == true ]] && exit 1
+        [[ ${VPN_HEALTHCHECK_ENABLED} == true ]] && exit 1
     else
         echo "[INF] [$(date '+%Y-%m-%d %H:%M:%S')] [VPN] [IPV4] ${ip4}"
     fi
@@ -329,14 +329,14 @@ if [[ ${VPN_ENABLED} == "true" ]]; then
         ping6=$(ping6 -c 5 2606:4700:4700::1111 2> /dev/null | tail -1 | awk -F ' = ' '{print $2}')
         if [[ -z ${ping6} ]]; then
             echo "[ERR] [$(date '+%Y-%m-%d %H:%M:%S')] [VPN] [IPV6] Ping test failed!"
-            [[ ${VPN_BRING_DOWN_ON_TEST_FAILURE} == true ]] && exit 1
+            [[ ${VPN_HEALTHCHECK_ENABLED} == true ]] && exit 1
         else
             echo "[INF] [$(date '+%Y-%m-%d %H:%M:%S')] [VPN] [IPV6] [PING: ${ping6}]"
         fi
         ip6=$(curl -fsL -6 --retry 5 --retry-max-time 60 --max-time 10 wtfismyip.com/json | jq -re '"[\(.YourFuckingLocation)] [\(.YourFuckingISP)] [\(.YourFuckingIPAddress)]"')
         if [[ -z ${ip6} ]]; then
             echo "[ERR] [$(date '+%Y-%m-%d %H:%M:%S')] [VPN] [IPV6] IP lookup failed!"
-            [[ ${VPN_BRING_DOWN_ON_TEST_FAILURE} == true ]] && exit 1
+            [[ ${VPN_HEALTHCHECK_ENABLED} == true ]] && exit 1
         else
             echo "[INF] [$(date '+%Y-%m-%d %H:%M:%S')] [VPN] [IPV6] ${ip6}"
         fi
