@@ -342,3 +342,5 @@ if [[ ${VPN_ENABLED} == "true" ]]; then
         fi
     fi
 fi
+
+exit 0
